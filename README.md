@@ -1,39 +1,39 @@
 # s2-project
-Global Hotkeys
+#Global Hotkeys
 
 (Work even when the overlay is locked or not focused)
 
-F8
+#F8
 Toggle Click-through mode (Lock / Unlock overlay)
 
 Overlay Controls
 
 (Only active when click-through is OFF)
 
-Left Click
+#Left Click
 Select and move chess pieces on the overlay board
 
-Right Click + Drag
+#Right Click + Drag
 Move the overlay window
 
-F
+#F
 Flip board orientation (White ↔ Black)
 
-Ctrl + Z
+#Ctrl + Z
 Undo last move
 
-Ctrl + R
+#Ctrl + R
 Reset the board to the initial position
 
 Board & Engine Adjustments
 
-+ / -
+#+ / -
 Increase or decrease board square size
 
-[ / ]
+#[ / ]
 Decrease or increase Stockfish Elo limit
 
-0
+#0
 Cycle engine depth
 5 → 10 → 15 → 20
 
