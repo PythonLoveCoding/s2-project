@@ -1,45 +1,43 @@
 # s2-project
-using stockfish and ui chess board , transparent and elo + dept option
-Windows
+Global Hotkeys
 
-Python 3.9+
+(Work even when the overlay is locked or not focused)
 
-Stockfish engine (Windows build)
+F8
+Toggle Click-through mode (Lock / Unlock overlay)
 
-Python libraries
-pip install python-chess keyboard
-
-
-keyboard requires Run as Administrator to capture global hotkeys.
-
-Setup
-
-Clone the repo
-
-git clone https://github.com/yourname/chess-overlay
-cd chess-overlay
-
-
-Run the script
-
-python main.py
-
-
-On first launch, select your stockfish.exe
-(Path will be saved in chess_overlay_config.json)
-Global (works even when overlay is locked)
-Key	Action
-F8	Toggle Click-through (Lock / Unlock overlay)
 Overlay Controls
-Key	Action
-Left Click	Select & move pieces
-Right Click + Drag	Move overlay window
-F	Flip board
-Ctrl + Z	Undo move
-Ctrl + R	Reset board
-+ / -	Increase / decrease board size
-[ / ]	Decrease / increase Engine Elo
-0	Cycle Depth (5 → 10 → 15 → 20)
-ESC	Quit
 
-![Uploading Screenshot 2025-12-18 214420.png…]()
+(Only active when click-through is OFF)
+
+Left Click
+Select and move chess pieces on the overlay board
+
+Right Click + Drag
+Move the overlay window
+
+F
+Flip board orientation (White ↔ Black)
+
+Ctrl + Z
+Undo last move
+
+Ctrl + R
+Reset the board to the initial position
+
+Board & Engine Adjustments
+
++ / -
+Increase or decrease board square size
+
+[ / ]
+Decrease or increase Stockfish Elo limit
+
+0
+Cycle engine depth
+5 → 10 → 15 → 20
+
+System
+
+ESC
+Exit the application cleanly (engine + hotkeys released)
