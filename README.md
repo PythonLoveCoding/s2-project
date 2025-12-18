@@ -44,3 +44,4 @@ Cycle depth (5 → 10 → 15 → 20)
 **ESC**  
 Quit application
 
+<img width="578" height="738" alt="Screenshot 2025-12-18 214420" src="https://github.com/user-attachments/assets/e506a048-80d4-48e5-bfdf-db4261cda014" />
