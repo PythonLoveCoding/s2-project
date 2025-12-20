@@ -13,8 +13,8 @@ import keyboard
 
 CONFIG_FILE = "chess_overlay_config.json"
 DEFAULT_CONFIG = {
-    "engine_path": "c:\\Users\\admin\\Downloads\\stockfish-windows-x86-64-avx2\\stockfish\\stockfish-windows-x86-64-avx2.exe",
-    "book_path": "C:\\Users\\admin\\Downloads\\identify chess board\\komodo.bin",
+    "engine_path": "",  # ur stockfish path file
+    "book_path": "",  # ur book (book move) .bin pathfile
     "square_size": 60,
     "elo": 1500, #what ever u want can edit it tho
     "depth": 15 
@@ -491,3 +491,4 @@ class ChessOverlay:
 
 if __name__ == "__main__":
     ChessOverlay().root.mainloop()
+
