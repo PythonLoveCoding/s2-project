@@ -9,13 +9,12 @@ import os
 import json
 import keyboard 
 
-
 CONFIG_FILE = "chess_overlay_config.json"
 DEFAULT_CONFIG = {
     "engine_path": "",
     "square_size": 60,
-    "elo": 1500,        # Elo mặc định (Mức trung bình để né report)
-    "depth": 10,        # Độ sâu mặc định (Thấp = giống người hơn)
+    "elo": 1500,
+    "depth": 10,
     "board_color": "#1a1a1a",
 }
 
@@ -49,19 +48,15 @@ class ChessOverlay:
         
         self.canvas.bind("<Button-1>", self.on_click)
         
-        # HOTKEYS MỚI
         keyboard.add_hotkey('f8', self.toggle_click_through)
         self.root.bind("f", lambda e: self.toggle_flip()) 
         self.root.bind("<Control-z>", lambda e: self.undo_move())
         self.root.bind("<Control-r>", lambda e: self.reset_board())
         self.root.bind("=", lambda e: self.change_size(5))  
         self.root.bind("-", lambda e: self.change_size(-5)) 
-        
-        # Tùy chỉnh Elo và Depth
         self.root.bind("]", lambda e: self.change_elo(100))
         self.root.bind("[", lambda e: self.change_elo(-100))
         self.root.bind("0", lambda e: self.change_depth())
-        
         self.root.bind("<Escape>", lambda e: self.quit())
 
         self.rebuild_ui()
@@ -77,14 +72,13 @@ class ChessOverlay:
     def rebuild_ui(self):
         self.BOARD_SIZE = self.SQUARE_SIZE * 8
         self.TITLE_HEIGHT = 25
-        self.INFO_HEIGHT = 100 # Tăng thêm để hiện Elo
+        self.INFO_HEIGHT = 100 
         total_height = self.TITLE_HEIGHT + self.BOARD_SIZE + self.INFO_HEIGHT
         self.canvas.config(width=self.BOARD_SIZE, height=total_height)
         self.refresh_ui()
 
     def change_size(self, delta):
-        self.SQUARE_SIZE += delta
-        self.SQUARE_SIZE = max(30, min(120, self.SQUARE_SIZE))
+        self.SQUARE_SIZE = max(30, min(120, self.SQUARE_SIZE + delta))
         self.rebuild_ui()
 
     def change_elo(self, delta):
@@ -93,7 +87,6 @@ class ChessOverlay:
         self.refresh_ui()
 
     def change_depth(self):
-        # Chuyển đổi giữa các mức Depth: 5 (ngu), 10 (vừa), 20 (pro)
         depths = [5, 10, 15, 20]
         curr_idx = depths.index(self.DEPTH) if self.DEPTH in depths else 1
         self.DEPTH = depths[(curr_idx + 1) % len(depths)]
@@ -102,7 +95,6 @@ class ChessOverlay:
     def _update_engine_params(self):
         if self.engine_loaded:
             try:
-                # Thiết lập giới hạn sức mạnh Stockfish
                 self.engine.configure({"UCI_LimitStrength": True, "UCI_Elo": self.ELO})
                 self.force_analysis()
             except: pass
@@ -111,13 +103,11 @@ class ChessOverlay:
         self.canvas.delete("all")
         offset = self.TITLE_HEIGHT
         
-        # 1. TIÊU ĐỀ
         self.canvas.create_rectangle(0, 0, self.BOARD_SIZE, offset, fill="#222222")
-        title = self.canvas.create_text(self.BOARD_SIZE//2, offset//2, text="::: DRAG TITLE BAR :::", fill="#888888", font=("Arial", 7, "bold"))
+        title = self.canvas.create_text(self.BOARD_SIZE//2, offset//2, text="::: DRAG :::", fill="#888888", font=("Arial", 7, "bold"))
         self.canvas.tag_bind(title, "<ButtonPress-1>", self._start_drag)
         self.canvas.tag_bind(title, "<B1-Motion>", self._do_drag)
         
-        # 2. BÀN CỜ & QUÂN CỜ
         for r in range(8):
             for c in range(8):
                 x1, y1 = c * self.SQUARE_SIZE, r * self.SQUARE_SIZE + offset
@@ -136,12 +126,10 @@ class ChessOverlay:
                 p_color = "#ffffff" if p.color == chess.WHITE else "#ffaa00"
                 self.canvas.create_text(x, y, text=PIECES.get(p.symbol()), fill=p_color, font=("Arial", int(self.SQUARE_SIZE*0.6), "bold"))
         
-        # 3. BẢNG INFO (CHẾ ĐỘ DIỄN)
         info_y = offset + self.BOARD_SIZE
         self.canvas.create_text(10, info_y + 15, anchor="w", text=f"ELO: {self.ELO} | DEPTH: {self.DEPTH}", fill="#ffcc00", font=("Consolas", 10, "bold"))
         self.eval_text_id = self.canvas.create_text(10, info_y + 35, anchor="w", text="Eval: 0.0", fill="white", font=("Consolas", 9))
         self.move_text_id = self.canvas.create_text(10, info_y + 55, anchor="w", text="Best: -", fill="#00aaff", font=("Consolas", 10, "bold"))
-        self.canvas.create_text(10, info_y + 75, anchor="w", text="Keys: [ ] Elo | 0 Depth | + - Size", fill="#555555", font=("Consolas", 8))
         
         self.force_analysis()
 
@@ -177,7 +165,6 @@ class ChessOverlay:
 
     def _analyze_thread(self):
         try:
-            # Phân tích dựa trên Depth đã chọn
             info = self.engine.analyse(self.board, chess.engine.Limit(depth=self.DEPTH))
             score = info["score"].relative.score()/100.0 if info["score"].relative.score() is not None else 0
             self.root.after(0, lambda: self._update_analysis_ui(info["pv"][0], score))
